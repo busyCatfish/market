@@ -25,16 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Business\Business.csproj" />
+    <ProjectReference Include="..\Data\Data.csproj" />
     <ProjectReference Include="..\WebApi\WebApi.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Business">
-      <HintPath>..\Business\obj\Debug\netcoreapp3.1\Business.dll</HintPath>
-    </Reference>
-    <Reference Include="Data">
-      <HintPath>..\Data\obj\Debug\netcoreapp3.1\Data.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

@@ -38,7 +38,6 @@ namespace WebApi
 			services.AddDbContext<TradeMarketDbContext>(opts =>
 			{
 				opts.UseInMemoryDatabase(Configuration["ConnectionStrings:Market"]);
-				//opts.UseSqlServer(Configuration["ConnectionStrings:Market"]);
 			});
 
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
