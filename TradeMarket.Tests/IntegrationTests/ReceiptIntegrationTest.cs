@@ -293,7 +293,7 @@ namespace TradeMarket.Tests.IntegrationTests
             {
                 context.ReceiptsDetails.Should().HaveCount(expectedLength);
 
-                var dbReceipt = await context.ReceiptsDetails.FindAsync(receiptId, productId);
+                var dbReceipt = await context.Receipts.FindAsync(receiptId);
                 dbReceipt.Should().NotBeNull().And.BeEquivalentTo(receiptDetail, options =>
                     options.Excluding(x => x.Id).ExcludingMissingMembers());
             }

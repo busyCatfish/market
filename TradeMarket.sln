@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TradeMarket.Tests", "TradeM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{3E519FA4-BE7F-44DB-A0AB-4CA4F7DF9E1A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "Business\Business.csproj", "{B912603D-805C-46EC-AC05-462F34B5EE03}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{F31FFCF5-DB63-4923-91AC-1F426FFECAF5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{3E519FA4-BE7F-44DB-A0AB-4CA4F7DF9E1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E519FA4-BE7F-44DB-A0AB-4CA4F7DF9E1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E519FA4-BE7F-44DB-A0AB-4CA4F7DF9E1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B912603D-805C-46EC-AC05-462F34B5EE03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B912603D-805C-46EC-AC05-462F34B5EE03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B912603D-805C-46EC-AC05-462F34B5EE03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B912603D-805C-46EC-AC05-462F34B5EE03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F31FFCF5-DB63-4923-91AC-1F426FFECAF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F31FFCF5-DB63-4923-91AC-1F426FFECAF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F31FFCF5-DB63-4923-91AC-1F426FFECAF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F31FFCF5-DB63-4923-91AC-1F426FFECAF5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

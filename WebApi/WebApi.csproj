@@ -5,5 +5,25 @@
 	<NoWarn>S1118</NoWarn>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Business">
+      <HintPath>..\Business\obj\Debug\netcoreapp3.1\Business.dll</HintPath>
+    </Reference>
+    <Reference Include="Data">
+      <HintPath>..\Data\obj\Debug\netcoreapp3.1\Data.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 
 </Project>

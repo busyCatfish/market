@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Business.Interfaces;
 using Business.Models;
+using Business.Validation;
+using Data.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,48 +14,131 @@ namespace WebApi.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        //Inject customer service via constructor
+        private readonly ICustomerService customerService;
 
-        // GET: api/customers
-        [HttpGet]
+		public CustomersController(ICustomerService customerService)
+		{
+			this.customerService = customerService;
+		}
+
+
+		// GET: api/customers
+		[HttpGet]
         public async Task<ActionResult<IEnumerable<CustomerModel>>> Get()
         {
-            throw new NotImplementedException();
+            IEnumerable<CustomerModel> customers;
+            try
+            {
+                customers = await customerService.GetAllAsync();
+            }
+            catch(MarketException)
+            {
+                return BadRequest();
+            }
+
+            if (customers is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(customers);
         }
 
         //GET: api/customers/1
         [HttpGet("{id}")]
         public async Task<ActionResult<CustomerModel>> GetById(int id)
         {
-            throw new NotImplementedException();
+			CustomerModel customer;
+			try
+			{
+				customer = await customerService.GetByIdAsync(id);
+			}
+			catch (MarketException)
+			{
+				return BadRequest();
+			}
+
+			if (customer is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(customer);
         }
         
         //GET: api/customers/products/1
         [HttpGet("products/{id}")]
         public async Task<ActionResult<CustomerModel>> GetByProductId(int id)
         {
-            throw new NotImplementedException();
-        }
+			IEnumerable<CustomerModel> customers;
+			try
+			{
+				customers = await customerService.GetCustomersByProductIdAsync(id);
+			}
+			catch (MarketException)
+			{
+				return BadRequest();
+			}
+
+			if (customers is null)
+			{
+				return NotFound();
+			}
+
+			return Ok(customers);
+		}
 
         // POST: api/customers
         [HttpPost]
         public async Task<ActionResult> Add([FromBody] CustomerModel value)
         {
-            throw new NotImplementedException();
+			try
+			{
+				await customerService.AddAsync(value);
+			}
+			catch (MarketException)
+			{
+				return BadRequest();
+			}
+
+			return Ok(value);
         }
 
         // PUT: api/customers/1
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int Id, [FromBody] CustomerModel value)
         {
-            throw new NotImplementedException();
-        }
+			try
+			{
+				if(Id != value.Id)
+				{
+					return BadRequest();
+				}
+
+				await customerService.UpdateAsync(value);
+			}
+			catch (MarketException)
+			{
+				return BadRequest();
+			}
+
+			return Ok(value);
+		}
 
         // DELETE: api/customers/1
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            throw new NotImplementedException();
+			try
+			{
+				await customerService.DeleteAsync(id);
+			}
+			catch (MarketException)
+			{
+				return BadRequest();
+			}
+
+			return Ok();
         }
     }
 }
