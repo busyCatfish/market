@@ -17,7 +17,7 @@ namespace Business
 			CreateMap<Product, ProductModel>()
 				.ForMember(pm => pm.ReceiptDetailIds, p => p.MapFrom(x => x.ReceiptDetails.Select(rd => rd.Id)))
 				.ForMember(pm => pm.ProductCategoryId, p => p.MapFrom(x => x.ProductCategoryId))
-				.AfterMap((p, pm) => pm.CategoryName = p.Category.CategoryName)
+				.AfterMap((p, pm) => pm.CategoryName = p.Category != null ? p.Category.CategoryName : string.Empty)
 			.ReverseMap();
 
 			CreateMap<ReceiptDetail, ReceiptDetailModel>()
