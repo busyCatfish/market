@@ -11,6 +11,7 @@ using System.Linq;
 using Stripe.Checkout;
 using Microsoft.Extensions.DependencyInjection;
 using WebApi.Models;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace WebApi.Controllers
 {
@@ -31,8 +32,9 @@ namespace WebApi.Controllers
 		[HttpPost]
 		public async Task<ActionResult> CheckoutOrder([FromBody] ProductModel product, [FromServices] IServiceProvider sp)
 		{
-			var referer = Request.Headers["Referer"];
-			s_wasmClientURL = referer[0];
+			//var referer = Request.Headers["Referer"];
+			s_wasmClientURL = Request.GetEncodedUrl();
+			//s_wasmClientURL = referer;
 
 			// Build the URL to which the customer will be redirected after paying.
 			var server = sp.GetRequiredService<IServer>();
@@ -43,21 +45,23 @@ namespace WebApi.Controllers
 
 			if (serverAddressesFeature != null)
 			{
-				thisApiUrl = serverAddressesFeature.Addresses.FirstOrDefault();
+				thisApiUrl = serverAddressesFeature.Addresses.LastOrDefault();
 			}
 
 			if (thisApiUrl != null)
 			{
-				var sessionId = await CheckOut(product, thisApiUrl);
+				//var sessionId = await CheckOut(product, thisApiUrl);
+				var session = await CheckOut(product, thisApiUrl);
 				var pubKey = _configuration["Stripe:PubKey"];
 
 				var checkoutOrderResponse = new CheckoutOrderResponse()
 				{
-					SessionId = sessionId,
+					//SessionId = sessionId,
+					SessionId = session.Id,
 					PubKey = pubKey
 				};
 
-				return Ok(checkoutOrderResponse);
+				return Ok(session.Url);
 			}
 			else
 			{
@@ -66,7 +70,7 @@ namespace WebApi.Controllers
 		}
 
 		[NonAction]
-		public async Task<string> CheckOut(ProductModel product, string thisApiUrl)
+		public async Task<Session> CheckOut(ProductModel product, string thisApiUrl)
 		{
 			// Create a payment flow from the items in the cart.
 			// Gets sent to Stripe API.
@@ -74,7 +78,7 @@ namespace WebApi.Controllers
 			{
 				// Stripe calls the URLs below when certain checkout events happen such as success and failure.
 				SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId=" + "{CHECKOUT_SESSION_ID}", // Customer paid.
-				CancelUrl = s_wasmClientURL + "failed",  // Checkout cancelled.
+				CancelUrl = s_wasmClientURL + "/failed",  // Checkout cancelled.
 				PaymentMethodTypes = new List<string> // Only card available in test mode?
             {
 				"card"
@@ -85,7 +89,7 @@ namespace WebApi.Controllers
 				{
 					PriceData = new SessionLineItemPriceDataOptions
 					{
-						UnitAmount = (long)product.Price, // Price is in USD cents.
+						UnitAmount = (long)product.Price*100, // Price is in USD cents.
                         Currency = "USD",
 						ProductData = new SessionLineItemPriceDataProductDataOptions
 						{
@@ -102,7 +106,11 @@ namespace WebApi.Controllers
 			var service = new SessionService();
 			var session = await service.CreateAsync(options);
 
-			return session.Id;
+			// Отримати URL для перенаправлення користувача на сторінку оплати
+			string paymentUrl = session.Url;
+
+			//return session.Id;
+			return session;
 		}
 
 		[HttpGet("success")]
